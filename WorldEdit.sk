@@ -1,0 +1,150 @@
+# -------------------------------- [ ~ WorldEdit Plugin Skript ~ ] --------------------------------
+# -------------------------------- [    Created by: dicioccio    ] --------------------------------                                  
+
+# if user right clicks any block with wooden axe
+on right click with wood axe:
+	if player is in "creative":
+		name of player's held item is "&8(&6&lWorldEdit&8) &7Wand"
+		set {x1.%player%} to rounded down x-position of event-block
+		set {y1.%player%} to rounded down y-position of event-block
+		set {z1.%player%} to rounded down z-position of event-block
+		send "&8(&6&lWorldEdit&8) &7Point 2 set! (X: %{x1.%player%}%, Y: %{y1.%player%}% Z: %{z1.%player%}%)"
+	else:
+		send "&8(&6&lWorldEdit&8) &7You can't use this here!"
+
+
+# if user breaks any block
+on break:
+	if player is in "creative":
+		name of player's held item is "&8(&6&lWorldEdit&8) &7Wand"
+		player's held item is a wood axe
+		cancel event
+		set {x2.%player%} to rounded down x-position of event-block
+		set {y2.%player%} to rounded down y-position of event-block
+		set {z2.%player%} to rounded down z-position of event-block
+		send "&8(&6&lWorldEdit&8) &7Point 1 set! (X: %{x2.%player%}%, Y: %{y2.%player%}% Z: %{z2.%player%}%)"
+	else:
+		send "&8(&6&lWorldEdit&8) &7You can't use this here!"
+
+# run this every time server admin reloads Skript file
+on load:
+	broadcast "&8----------------------------------------------"
+	broadcast "&8(&6&lWorldEdit&8) &7To begin type //help"
+	broadcast "&8----------------------------------------------"
+
+# -------------------------------- [    WORLD EDIT COMMANDS    ] --------------------------------
+
+# help menu for user to see all commands in one place
+Command //help:
+	trigger:
+		if player is in "creative":
+			send "&8----------------------------------------------"
+			send "&8(&6&lWorldEdit&8) &7Help Menu - //help"
+			send "&6//wand &7- Give player wand."
+			send "&6//up [num] &7- Teleport upwards."
+			send "&6//set [block] &7- Set area to block."
+			send "&6//replace [old] [new] &7- Replace [old] with [new]"
+			send "&6//cut &7- Delete blocks in area."
+			send "&8----------------------------------------------"
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+
+# give user wooden axe with specific name as key
+Command //wand:
+	trigger:
+		if player is in "creative":
+			give 1 wood axe named "&8(&6&lWorldEdit&8) &7Wand" to player
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+
+
+# set user selection equal to block of user's choice
+Command //set [<text>]:
+	trigger:
+		if player is in "creative":
+			set {_u} to unix timestamp of now
+			execute console command "fill %{x1.%player%}% %{y1.%player%}% %{z1.%player%}% %{x2.%player%}% %{y2.%player%}% %{z2.%player%}% %arg-1% replace"
+			set {_time} to (unix timestamp of now - {_u}) * 1000
+			send "&8(&6&lWorldEdit&8) &7Completed in %{_time}%ms."
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+
+# take in two blocks and replace the first block with the second block
+Command //replace [<text>] [<text>]:
+	trigger:
+		if player is in "creative":
+			arg-1 is set:
+				execute console command "fill %{x1.%player%}% %{y1.%player%}% %{z1.%player%}% %{x2.%player%}% %{y2.%player%}% %{z2.%player%}% %arg-2% replace %arg-1%"
+			else:
+				send "&8(&6&lWorldEdit&8) &7//replace [old] [new]"
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+
+# cut blocks out of designated zone
+Command //cut:
+	trigger:
+		if player is in "creative":
+			set {_u} to unix timestamp of now
+			execute console command "fill %{x1.%player%}% %{y1.%player%}% %{z1.%player%}% %{x2.%player%}% %{y2.%player%}% %{z2.%player%}% minecraft:air replace"
+			set {_time} to (unix timestamp of now - {_u}) * 1000
+			send "&8(&6&lWorldEdit&8) &7Area cut in %{_time}%ms."
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+
+
+# move user up by x amount of blocks
+Command //up [<integer>]:
+	trigger:
+		if player is in "creative":
+			arg-1 is set:
+				set {px} to player's x-coordinate
+				set {py} to player's y-coordinate
+				set {pz} to player's z-coordinate
+				execute console command "tp %player% %{px}% %{py}+(arg-1)% %{pz}%"
+				set block under player to glass
+				send "&8(&6&lWorldEdit&8) &7Whooosh!"
+			else:
+				send "&8(&6&lWorldEdit&8) &7/up (amount)"
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+
+Command //sphere [<integer>] [<item type>]:
+	trigger:
+		player has permission "swe.admin":
+			arg-2 is set:
+				set {_u} to unix timestamp of now
+				loop blocks in radius arg-1 around location of player:
+					loop-block is not arg-2
+					set loop-block to arg-2
+				set {_time} to (unix timestamp of now - {_u}) * 1000
+				send "&8(&6&lWorldEdit&8) &7Operation completed in %{_time}%ms."
+			else:
+				send "&8(&6&lWorldEdit&8) &7//sphere (radius) (block name)"
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+		
+Command //walls [<text>]:
+	trigger:
+		player has permission "swe.admin":
+			arg-1 is set:
+				set {_u} to unix timestamp of now
+				execute console command "fill %{x1.%player%}% %{y1.%player%}% %{z1.%player%}% %{x2.%player%}% %{y2.%player%}% %{z1.%player%}% %arg-1%"
+				execute console command "fill %{x2.%player%}% %{y2.%player%}% %{z1.%player%}% %{x2.%player%}% %{y1.%player%}% %{z2.%player%}% %arg-1%"
+				execute console command "fill %{x2.%player%}% %{y1.%player%}% %{z2.%player%}% %{x1.%player%}% %{y2.%player%}% %{z2.%player%}% %arg-1%"
+				execute console command "fill %{x1.%player%}% %{y2.%player%}% %{z2.%player%}% %{x1.%player%}% %{y1.%player%}% %{z1.%player%}% %arg-1%"
+				set {_time} to (unix timestamp of now - {_u}) * 1000
+				send "&8(&6&lWorldEdit&8) &7Operation completed in %{_time}%ms."
+			else:
+				send "&8(&6&lWorldEdit&8) &7//walls (minecraft block ID)"
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"
+			
+Command //paste:
+	trigger:
+		player has permission "swe.admin":
+			set {_u} to unix timestamp of now
+			execute console command "clone %{x1.%player%}% %{y1.%player%}% %{z1.%player%}% %{x2.%player%}% %{y2.%player%}% %{z2.%player%}% %rounded down x-location of player% %rounded down y-location of player% %rounded down z-location of player% masked"
+			set {_time} to (unix timestamp of now - {_u}) * 1000
+			send "&8(&6&lWorldEdit&8) &7Object Pasted in %{_time}%ms."
+		else:
+			send "&8(&6&lWorldEdit&8) &7You don't have permission to run this command!"

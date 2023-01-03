@@ -1,0 +1,63 @@
+# -------------------------------- [    ~ Hub Plugin Skript ~    ] --------------------------------
+# -------------------------------- [    Created by: dicioccio    ] --------------------------------  
+
+# mvm set bedrespawn true - turns on spawnpoint
+
+# if user right clicks anything with compass
+on right click with compass:		
+	name of player's held item is "&b&kii&5&l Hub &b&kii"
+	set {_gui} to a new chest inventory with 5 row with name "&b&kii&5&l Hub &b&kii"
+	set slot 20 of {_gui} to grass with name "&2&lSurvival"
+	set slot 22 of {_gui} to crafting table with name "&6&lCreative"
+	set slot 24 of {_gui} to acacia stairs with name "&a&lParkour"
+	set slot 40 of {_gui} to paper with name "&lAlias: /hub"
+	open {_gui} to player
+
+# if user right clicks with start block
+on right click with emerald block:
+	name of player's held item is "&a&l&oStart!"
+	execute console command "execute in 100levels run tp %player% -2 161 2"
+	execute console command "clear %player%"
+	give 1 compass named "&b&kii&5&l Hub &b&kii" to player
+
+on death of player:
+	execute console command "clear %player%"
+	give 1 compass named "&b&kii&5&l Hub &b&kii" to player	
+	give 1 emerald block named "&a&l&oStart!" to player
+	
+
+command /hub:
+	trigger:
+		set {_gui} to a new chest inventory with 5 row with name "&b&kii&5&l Hub &b&kii"
+		set slot 20 of {_gui} to grass with name "&2&lSurvival"
+		set slot 22 of {_gui} to crafting table with name "&6&lCreative"
+		set slot 24 of {_gui} to acacia stairs with name "&b&lParkour"
+		set slot 40 of {_gui} to paper with name "&lAlias: /hub"
+		open {_gui} to player
+ 
+on inventory click:
+	if name of event-inventory is "&b&kii&5&l Hub &b&kii":
+		if index of event-slot = 20:
+			cancel event
+			execute console command "clear %player%"
+			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
+			execute console command "effect clear %player%"
+			teleport player to spawn of world "world"
+		else if index of event-slot = 22:
+			cancel event
+			execute console command "clear %player%"
+			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
+			execute console command "effect clear %player%"
+			execute console command "effect give %player% speed 999999 10"
+			teleport player to spawn of world "creative"
+		else if index of event-slot = 24:
+			cancel event
+			execute console command "clear %player%"
+			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
+			give 1 emerald block named "&a&l&oStart!" to player
+			execute console command "effect clear %player%"
+			teleport player to spawn of world "100levels"
+		else if index of event-slot = 40:
+			cancel event
+			
+		
