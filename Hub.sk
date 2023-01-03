@@ -3,15 +3,27 @@
 
 # mvm set bedrespawn true - turns on spawnpoint
 
-# if user right clicks anything with compass
+# if user right clicks anything with compass named Hub
 on right click with compass:		
 	name of player's held item is "&b&kii&5&l Hub &b&kii"
 	set {_gui} to a new chest inventory with 5 row with name "&b&kii&5&l Hub &b&kii"
-	set slot 20 of {_gui} to grass with name "&2&lSurvival"
-	set slot 22 of {_gui} to crafting table with name "&6&lCreative"
-	set slot 24 of {_gui} to acacia stairs with name "&a&lParkour"
-	set slot 40 of {_gui} to paper with name "&lAlias: /hub"
+	set slot 19 of {_gui} to grass with name "&2&lSurvival"
+	set slot 21 of {_gui} to crafting table with name "&6&lCreative"
+	set slot 23 of {_gui} to acacia stairs with name "&a&lParkour"
+	set slot 25 of {_gui} to oak log with name "&b&lSean's World"
+	set slot 41 of {_gui} to paper with name "&lAlias for this menu: /hub"
+	set slot 39 of {_gui} to barrier with name "&4&lInventory will be wiped!"
 	open {_gui} to player
+
+# if user right clicks anything with compass named Teleport
+on right click with spyglass:		
+	name of player's held item is "&b&kii&5&l Teleport &b&kii"
+	set {_gui} to a new chest inventory with 5 row with name "&b&kii&5&l Teleport &b&kii"
+	set slot 19 of {_gui} to block of copper with name "&6&lDamster Dam"
+	set slot 21 of {_gui} to prismarine bricks with name "&b&lSnobby Shores"
+	set slot 23 of {_gui} to stone bricks with name "&a&lHamilton"
+	set slot 25 of {_gui} to bedrock with name "&8&lNull"
+	open {_gui} to player	
 
 # if user right clicks with start block
 on right click with emerald block:
@@ -24,40 +36,67 @@ on death of player:
 	execute console command "clear %player%"
 	give 1 compass named "&b&kii&5&l Hub &b&kii" to player	
 	give 1 emerald block named "&a&l&oStart!" to player
-	
+
 
 command /hub:
 	trigger:
 		set {_gui} to a new chest inventory with 5 row with name "&b&kii&5&l Hub &b&kii"
-		set slot 20 of {_gui} to grass with name "&2&lSurvival"
-		set slot 22 of {_gui} to crafting table with name "&6&lCreative"
-		set slot 24 of {_gui} to acacia stairs with name "&b&lParkour"
-		set slot 40 of {_gui} to paper with name "&lAlias: /hub"
+		set slot 19 of {_gui} to grass with name "&2&lSurvival"
+		set slot 21 of {_gui} to crafting table with name "&6&lCreative"
+		set slot 23 of {_gui} to acacia stairs with name "&a&lParkour"
+		set slot 25 of {_gui} to oak log with name "&b&lSean's World"
+		set slot 41 of {_gui} to paper with name "&lAlias for this menu: /hub"
+		set slot 39 of {_gui} to barrier with name "&4&lInventory will be wiped!"
 		open {_gui} to player
+
+command /wc:
+	trigger:
+		execute console command "execute in 22wrld2 run weather clear"
  
 on inventory click:
 	if name of event-inventory is "&b&kii&5&l Hub &b&kii":
-		if index of event-slot = 20:
+		if index of event-slot = 19:
 			cancel event
 			execute console command "clear %player%"
 			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
 			execute console command "effect clear %player%"
 			teleport player to spawn of world "world"
-		else if index of event-slot = 22:
+		else if index of event-slot = 21:
 			cancel event
 			execute console command "clear %player%"
 			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
 			execute console command "effect clear %player%"
-			execute console command "effect give %player% speed 999999 10"
+			give 1 elytra to player
+			give 64 firework to player
 			teleport player to spawn of world "creative"
-		else if index of event-slot = 24:
+		else if index of event-slot = 23:
 			cancel event
 			execute console command "clear %player%"
 			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
 			give 1 emerald block named "&a&l&oStart!" to player
 			execute console command "effect clear %player%"
 			teleport player to spawn of world "100levels"
-		else if index of event-slot = 40:
+		else if index of event-slot = 25:
 			cancel event
-			
-		
+			execute console command "clear %player%"
+			give 1 compass named "&b&kii&5&l Hub &b&kii" to player
+			give 1 spyglass named "&b&kii&5&l Teleport &b&kii" to player
+			execute console command "effect clear %player%"
+			teleport player to spawn of world "22wrld2"
+			execute console command "execute in 22wrld2 run tp %player% -385 113 28"
+		else if index of event-slot = 39:
+			cancel event
+		else if index of event-slot = 41:
+			cancel event	
+	if name of event-inventory is "&b&kii&5&l Teleport &b&kii":
+		if index of event-slot = 19:
+			cancel event
+			execute console command "execute in 22wrld2 run tp %player% -385 113 28"
+		else if index of event-slot = 21:
+			cancel event
+			execute console command "execute in 22wrld2 run tp %player% -821 127 -576"
+		else if index of event-slot = 23:
+			cancel event
+			execute console command "execute in 22wrld2 run tp %player% 653 143 -463"
+		else if index of event-slot = 25:
+			cancel event
