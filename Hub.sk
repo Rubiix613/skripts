@@ -52,6 +52,14 @@ command /hub:
 command /wc:
 	trigger:
 		execute console command "execute in 22wrld2 run weather clear"
+
+command /tsd:
+	trigger:
+		execute console command "execute in 22wrld2 run time set day"
+
+command /tpp [<text>]:
+	trigger:
+		execute console command "tp %player% %arg-1%"
  
 on inventory click:
 	if name of event-inventory is "&b&kii&5&l Hub &b&kii":
