@@ -15,8 +15,8 @@ on right click with wood axe:
 
 # if user breaks any block
 on break:
+	name of player's held item is "&8(&6&lWorldEdit&8) &7Wand"
 	if player is in "22wrld2":
-		name of player's held item is "&8(&6&lWorldEdit&8) &7Wand"
 		player's held item is a wood axe
 		cancel event
 		set {x2.%player%} to rounded down x-position of event-block
@@ -25,6 +25,7 @@ on break:
 		send "&8(&6&lWorldEdit&8) &7Point 1 set! (X: %{x2.%player%}%, Y: %{y2.%player%}% Z: %{z2.%player%}%)"
 	else:
 		send "&8(&6&lWorldEdit&8) &7You can't use this here!"
+
 
 # run this every time server admin reloads Skript file
 on load:
